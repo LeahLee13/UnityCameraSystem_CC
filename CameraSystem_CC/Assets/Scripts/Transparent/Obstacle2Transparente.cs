@@ -6,7 +6,7 @@ public class Obstacle2Transparente : MonoBehaviour
     private GameObject player;
     public Material alphaMaterial;//透明材质
 
-    private List<RaycastHit> hits;
+    private List<RaycastHit> hits = new List<RaycastHit>();
     private List<HitInfo> changedInfos = new List<HitInfo>();
 
     private struct HitInfo
@@ -30,7 +30,7 @@ public class Obstacle2Transparente : MonoBehaviour
     private void ChangeMaterial()
     {
         //用相机位置与角色位置的差值-1是为了避免检测到地面，提高可移植性，否则射线检测到的对象还要除去地面
-        hits = new List<RaycastHit>(Physics.RaycastAll(transform.position, transform.forward, Vector3.Distance(this.transform.position, player.transform.position) - 1));
+        hits.AddRange(Physics.RaycastAll(transform.position, transform.forward, Vector3.Distance(this.transform.position, player.transform.position) - 1));
 
         //替换材质
         for (int i = 0; i < hits.Count; i++)
@@ -96,5 +96,7 @@ public class Obstacle2Transparente : MonoBehaviour
                 i++;
             }
         }
+
+        hits.Clear();
     }
 }
